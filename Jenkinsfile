@@ -2,7 +2,7 @@ pipeline {
     agent any
 
     triggers {
-        // Every 5 minutes check for changes
+        // दर 5 मिनिटांनी GitHub repo poll करेल
         pollSCM('H/5 * * * *')
     }
 
@@ -10,7 +10,7 @@ pipeline {
         stage('Checkout') {
             steps {
                 git branch: 'develop',
-                    url: 'https://github.com/pranaychatur8975/django-todo-cicd..git',
+                    url: 'https://github.com/pranaychatur8975/django-todo-cicd.git',
                     credentialsId: '11480d13-4196-4e20-adbc-e8a66d7b0d52'
             }
         }
@@ -24,9 +24,9 @@ pipeline {
         stage('Remove Old Container') {
             steps {
                 sh '''
-                    if [ $(docker ps -q --filter "name=todo-app") ]; then
-                        docker stop todo-app
-                        docker rm todo-app
+                    if [ $(docker ps -aq -f name=todo-app) ]; then
+                        docker stop todo-app || true
+                        docker rm todo-app || true
                     fi
                 '''
             }
@@ -34,7 +34,10 @@ pipeline {
 
         stage('Run New Container') {
             steps {
-                sh 'docker run -p 8000:8000 -d todo-app'
+                sh '''
+                    docker run -d --name todo-app -p 8000:8000 todo-app
+                    docker exec todo-app python manage.py migrate
+                '''
             }
         }
     }
