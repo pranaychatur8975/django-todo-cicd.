@@ -10,7 +10,7 @@ pipeline {
         stage('Checkout') {
             steps {
                 git branch: 'develop',
-                    url: 'https://github.com/pranaychatur8975/django-todo-cicd.git',
+                    url: 'https://github.com/pranaychatur8975/django-todo-cicd..git',
                     credentialsId: '11480d13-4196-4e20-adbc-e8a66d7b0d52'
             }
         }
