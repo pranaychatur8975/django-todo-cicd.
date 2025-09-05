@@ -35,8 +35,10 @@ pipeline {
         stage('Run New Container') {
             steps {
                 sh '''
-                    docker run -d --name todo-app -p 8000:8000 todo-app
-                    docker exec todo-app python manage.py migrate
+                    docker run -d --name todo-app -p 8000:8000 todo-app sh -c "
+                        python manage.py migrate --noinput &&
+                        python manage.py runserver 0.0.0.0:8000
+                    "
                 '''
             }
         }
