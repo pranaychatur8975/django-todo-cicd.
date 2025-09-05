@@ -34,7 +34,7 @@ pipeline {
 
         stage('Run New Container') {
             steps {
-                sh 'docker run -d --name todo-app -p 8000:8000 todo-app'
+                sh 'docker run -p 8000:8000 -d todo-app'
             }
         }
     }
