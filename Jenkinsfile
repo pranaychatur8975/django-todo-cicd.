@@ -17,16 +17,16 @@ pipeline {
 
         stage('Build Docker Image') {
             steps {
-                sh 'sudo docker build -t todo-app .'
+                sh 'docker build -t todo-app .'
             }
         }
 
         stage('Remove Old Container') {
             steps {
                 sh '''
-                    if [ $(sudo docker ps -q --filter "name=todo-app") ]; then
-                        sudo docker stop todo-app
-                        sudo docker rm todo-app
+                    if [ $(docker ps -q --filter "name=todo-app") ]; then
+                        docker stop todo-app
+                        docker rm todo-app
                     fi
                 '''
             }
@@ -34,7 +34,7 @@ pipeline {
 
         stage('Run New Container') {
             steps {
-                sh 'sudo docker run -d --name todo-app -p 8000:8000 todo-app'
+                sh 'docker run -d --name todo-app -p 8000:8000 todo-app'
             }
         }
     }
