@@ -1,11 +1,6 @@
 pipeline {
     agent any
 
-    triggers {
-        // दर 5 मिनिटांनी GitHub repo poll करेल
-        pollSCM('H/5 * * * *')
-    }
-
     stages {
         stage('Checkout') {
             steps {
